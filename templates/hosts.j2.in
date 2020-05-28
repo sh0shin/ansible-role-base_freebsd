@@ -1,0 +1,48 @@
+# {{ base_hosts_file }}
+# {{ ansible_managed }}
+
+# local
+127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1       localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% if base_hosts_ipv4 is defined                      %}
+{%  set _hosts_ipv4 = base_hosts_ipv4                 %}
+{% elif base_ipv4_address is defined                  %}
+{%  set _hosts_ipv4 = base_ipv4_address               %}
+{% elif ansible_default_ipv4['address'] is defined    %}
+{%  set _hosts_ipv4 = ansible_default_ipv4['address'] %}
+{% else                                               %}
+{%  set _hosts_ipv4 = ""                              %}
+{% endif                                              %}
+{% if _hosts_ipv4                                     %}
+# ipv4
+{{ _hosts_ipv4 }} {{ base_hostname }} {{ base_hostname_short }}
+{% endif                                              %}
+{% if base_hosts_ipv6 is defined                      %}
+{%  set _hosts_ipv6 = base_hosts_ipv6                 %}
+{% elif base_ipv6_address is defined                  %}
+{%  set _hosts_ipv6 = base_ipv6_address               %}
+{% elif ansible_default_ipv6['address'] is defined    %}
+{%  set _hosts_ipv6 = ansible_default_ipv6['address'] %}
+{% else                                               %}
+{%  set _hosts_ipv6 = ""                              %}
+{% endif                                              %}
+{% if _hosts_ipv6                                     %}
+# ipv6
+{{ _hosts_ipv6 }} {{ base_hostname }} {{ base_hostname_short }}
+{% endif                                              %}
+
+# ipv6-defaults
+fe00::0 ipv6-localnet
+ff00::0 ipv6-mcastprefix
+ff02::1 ipv6-allnodes
+ff02::2 ipv6-allrouters
+ff02::3 ipv6-allhosts
+
+{% if base_hosts_local                                %}
+# local
+{{ base_hosts_local | join('\n') }}
+{% endif                                              %}
+
+# vim: set sw=2 ts=2 et :
+# eof

@@ -1,0 +1,15 @@
+# {{ base_dns_resolvconf_cfg_file }}
+# {{ ansible_managed }}
+
+resolv_conf='{{ base_dns_resolvconf_cfg_resolv_file }}'
+resolv_conf_options='{{ base_dns_resolvconf_cfg_options | join(' ') }}'
+
+{% if base_dns_search                               %}
+search_domains='{{ base_dns_search | join(' ') }}'
+{% endif                                            %}
+{% if base_dns_servers                              %}
+name_servers='{{ base_dns_servers | join(' ') }}'
+{% endif                                            %}
+
+# vim: set sw=4 ts=4 et :
+# eof

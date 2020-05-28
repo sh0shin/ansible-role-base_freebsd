@@ -1,0 +1,343 @@
+---
+
+# enabled
+base_freebsd_enabled: yes
+
+# mode/owner/group/backup defaults
+base_freebsd_file_mode: "0444"
+base_freebsd_dir_mode: "0755"
+base_freebsd_owner: "root"
+base_freebsd_group: "wheel"
+base_freebsd_backup: yes
+base_freebsd_umask: "022"
+
+# possible overrides for files
+#base_example_cfg_file_mode: "0400"
+#base_example_cfg_file_owner: "ansible"
+#base_exmaple_cfg_file_group: "wheel"
+#base_example_cfg_file_backup: false
+#base_example_cfg_file_template: "mytemplate"
+
+# packages
+base_freebsd_packages_repo: []
+base_freebsd_packages:
+  - converters/recode
+  - editors/vim-console
+  - misc/gnu-watch
+  - net/rsync
+  - shells/bash
+  - shells/bash-completion
+  - shells/zsh
+  - shells/zsh-completions
+  - sysutils/ccze
+  - sysutils/lsof
+  - sysutils/screen
+  - sysutils/tree
+
+base_freebsd_packages_local: []
+
+# hostname
+base_hostname: '{{ inventory_hostname }}'
+base_hostname_short: '{{ inventory_hostname_short }}'
+base_domain: '{{ inventory_hostname | replace(inventory_hostname_short ~ ".", "") }}'
+
+# network
+#base_ipv4_address:
+#base_ipv4_netmask:
+#base_ipv4_gateway:
+
+#base_ipv6_address:
+#base_ipv6_prefixlen:
+#base_ipv6_gateway:
+
+base_ipv4_flags: []
+base_ipv6_flags:
+  - 'accept_rtadv'
+
+base_interface_group: ""
+
+base_static_routes: []
+#  - name: "route1"
+#    route: "-host 1.2.3.4 -interface em0"
+
+# dns
+base_dns_servers:
+  - 8.8.8.8
+  - 8.8.4.4
+base_dns_search: [ '{{ base_domain }}' ]
+
+# dns resolvconf
+base_dns_resolvconf_cfg_file: "/etc/resolvconf.conf"
+base_dns_resolvconf_cfg_resolv_file: "/etc/resolv.conf"
+base_dns_resolvconf_cfg_options:
+  - attempts:1
+  - rotate
+  - timeout:1
+
+# hosts
+base_hosts_file: "/etc/hosts"
+
+# template defaults (if defined)
+#base_hosts_ipv4: '{{ base_ipv4_address }}' or '{{ ansible_default_ipv4["address"] }}'
+#base_hosts_ipv6: '{{ base_ipv6_address }}' or '{{ ansible_default_ipv6["address"] }}'
+
+# hosts local
+base_hosts_local: []
+
+# timezone
+base_timezone: 'UTC'
+
+# login/locale
+base_login_cfg_file: "/etc/login.conf"
+base_login_cfg_charset: "UTF-8"
+base_login_cfg_lang: "en_US.UTF-8"
+base_login_cfg_umask: "022"
+
+# newsyslog
+base_newsyslog_enabled: yes
+base_newsyslog_flags: "-CN -t DEFAULT"
+base_newsyslog_crontab_flags: "-C -t DEFAULT"
+base_newsyslog_group: "operator"
+
+base_newsyslog_cfg_file: "/etc/newsyslog.conf"
+base_newsyslog_cfg: {}
+
+# syslogd
+base_syslogd_enabled: yes
+base_syslogd_flags: "-CTss"
+
+base_syslogd_cfg_file: "/etc/syslog.conf"
+base_syslogd_cfg: {}
+
+# zfs
+base_zfs_enabled: yes
+
+# kld
+base_kld_list: []
+
+# rc
+base_rc_cfg_file: "/etc/rc.conf"
+base_rc_cfg: {}
+base_rc_cfg_defaults:
+  # accounting
+  accounting_enable: yes
+  # cleanvar
+  cleanvar_enable: yes
+  # cleartmp
+  clear_tmp_X: no
+  clear_tmp_enable: yes
+  # fsck
+  fsck_y_enable: yes
+  # growfs
+  #growfs_enable: yes
+  # mixer
+  mixer_enable: no
+  # moused
+  moused_enable: no
+  moused_nondefault_enable: no
+  # netoptions
+  ipv6_privacy: yes
+  ipv6_ipv4mapping: yes
+  tcp_drop_synfin: yes
+  tcp_extensions: yes
+  tcp_keepalive: no
+  # ntpd
+  ntpd_enable: yes
+  ntpd_flags: "-x"
+  ntpd_sync_on_start: yes
+  ntpdate_enable: yes
+  ntpdate_flags: "-bu"
+  # rc
+  rc_info: yes
+  rc_debug: no
+  # routing
+  gateway_enable: no
+  ipv6_gateway_enable: no
+  icmp_bmcastecho: no
+  icmp_drop_redirect: yes
+  icmp_log_redirect: yes
+  # sendmail
+  sendmail_enable: "NONE"
+  # syscons
+  keymap: "us.acc"
+  keybell: "quiet.off"
+  blanktime: 30
+  # sshd
+  sshd_enable: yes
+  sshd_dsa_enable: no
+  sshd_ecdsa_enable: no
+  sshd_ed25519_enable: yes
+  sshd_rsa1_enable: no
+  sshd_rsa_enable: yes
+  # newsyslog
+  newsyslog_enable: '{{ base_newsyslog_enabled }}'
+  newsyslog_flags: '{{ base_newsyslog_flags }}'
+  # syslog
+  syslogd_enable: '{{ base_syslogd_enabled }}'
+  syslogd_flags: '{{ base_syslogd_flags }}'
+  # virecover
+  virecover_enable: no
+  # zfs
+  zfs_enable: '{{ base_zfs_enabled }}'
+  zfsd_enable: '{{ base_zfs_enabled }}'
+
+# sysctl
+base_sysctl_cfg_file: "/etc/sysctl.conf"
+base_sysctl_cfg: {}
+base_sysctl_cfg_defaults:
+  # hw
+  hw.kbd.keymap_restrict_change: 4
+  # net
+  net.inet.ip.check_interface: 1
+  net.inet.ip.process_options: 0
+  net.inet.ip.random_id: 1
+  net.inet.ip.redirect: 0
+  net.inet.sctp.blackhole: 2
+  net.inet.tcp.blackhole: 2
+  net.inet.tcp.icmp_may_rst: 0
+  net.inet.tcp.nolocaltimewait: 1
+  net.inet.tcp.path_mtu_discovery: 0
+  net.inet.udp.blackhole: 1
+  net.inet6.icmp6.rediraccept: 0
+  net.inet6.ip6.redirect: 0
+  net.inet6.ip6.rfc6204w3: 0
+  net.inet6.ip6.use_deprecated: 0
+  # kern
+  kern.msgbuf_show_timestamp: 1
+  kern.randompid: '{{ 9999 | random(seed=inventory_hostname) }}'
+  # security.bsd
+  security.bsd.conservative_signals: 1
+  security.bsd.hardlink_check_gid: 1
+  security.bsd.hardlink_check_uid: 1
+  security.bsd.map_at_zero: 0
+  security.bsd.see_other_gids: 0
+  security.bsd.see_other_uids: 0
+  security.bsd.stack_guard_page: 1
+  security.bsd.suser_enabled: 1
+  security.bsd.unprivileged_get_quota: 0
+  security.bsd.unprivileged_idprio: 0
+  security.bsd.unprivileged_mlock: 1
+  security.bsd.unprivileged_proc_debug: 0
+  security.bsd.unprivileged_read_msgbuf: 0
+  # vfs
+  vfs.zfs.min_auto_ashift: 12
+
+base_sysctl_service: "sysctl"
+
+# boot
+base_boot_cfg_file: "/boot.config"
+base_boot_cfg: {}
+base_boot_cfg_defaults: {}
+
+# loader
+base_loader_cfg_file: "/boot/loader.conf"
+base_loader_cfg: {}
+base_loader_cfg_defaults:
+  autoboot_delay: 3
+  beastie_disable: yes
+  boot_multicons: yes
+  # modules
+  accf_data_load: yes
+  accf_dns_load: yes
+  accf_http_load: yes
+  aesni_load: yes
+  zfs_load: '{{ base_zfs_enabled }}'
+  # debug
+  # Automatically reboot on panic
+  debug.debugger_on_panic: 0
+  # Automatically print a stack trace on panic
+  debug.trace_on_panic: 1
+  # hint
+  # Disable PS/2 keyboard and mouse devices
+  #hint.atkbd.0.disabled: 1
+  #hint.atkbdc.0.disabled: 1
+  # Disable Floppy
+  hint.fdc.0.disabled: 1
+  # Disable Parallel Port
+  hint.ppc.0.disabled: 1
+  # hw
+  # Allow ASF mode if available
+  hw.bge.allow_asf: 1
+  # Number of receive/transmit descriptors per queue (em/igb/vmx)
+  hw.em.rxd: 4096
+  hw.em.txd: 4096
+  hw.igb.rxd: 4096
+  hw.igb.txd: 4096
+  hw.vmx.rxndesc: 2048
+  hw.vmx.txndesc: 2048
+  # kernel
+  kern.geom.label.disk_ident.enable: 0
+  kern.geom.label.gptid.enable: 0
+  kern.panic_reboot_wait_time: 0
+
+# periodic
+base_periodic_cfg_file: '/etc/periodic.conf'
+base_periodic_cfg: {}
+base_periodic_cfg_defaults:
+  # daily
+  daily_show_info: no
+  daily_show_success: no
+  ## 310.accounting
+  daily_accounting_enable: yes
+  daily_accounting_compress: yes
+  daily_accounting_save: 5
+  ## 404.status-zfs
+  daily_status_zfs_enable: '{{ base_zfs_enabled }}'
+  ## 480.leapfile-ntpd
+  daily_ntpd_leapfile_enable: yes
+  # weekly
+  weekly_show_info: no
+  weekly_show_success: no
+  # monthly
+  monthly_show_info: no
+  monthly_show_success: no
+  # security
+  security_show_info: no
+  security_show_success: no
+
+# pkg(ng)
+base_pkgng_cfg_file: "/usr/local/etc/pkg.conf"
+base_pkgng_cfg: {}
+base_pkgng_cfg_defaults:
+  AUTOCLEAN: no
+  CASE_SENSITIVE_MATCH: yes
+  HANDLE_RC_SCRIPTS: yes
+  REPO_AUTOUPDATE: no
+  SYSLOG: yes
+
+# pkg(ng) repos
+base_pkgng_repos_freebsd_file: "/usr/local/etc/pkg/repos/FreeBSD.conf"
+base_pkgng_repos_freebsd_mirror: "http://pkg.freebsd.org"
+base_pkgng_repos_freebsd_version: "latest"  # quarterly
+
+# pkg(ng) cron
+base_pkgng_cron_update_enabled: yes
+base_pkgng_cron_update_name: "pkg daily update"
+base_pkgng_cron_update_minute: "37"
+base_pkgng_cron_update_hour: "3"
+base_pkgng_cron_update_job: "/usr/sbin/pkg update -q"
+
+base_pkgng_cron_upgrade_enabled: yes
+base_pkgng_cron_upgrade_name: "pkg daily upgrade"
+base_pkgng_cron_upgrade_minute: "42"
+base_pkgng_cron_upgrade_hour: "3"
+base_pkgng_cron_upgrade_job: "/usr/sbin/pkg upgrade -Uqn"
+
+base_pkgng_cron_clean_enabled: yes
+base_pkgng_cron_clean_name: "pkg daily clean"
+base_pkgng_cron_clean_minute: "40"
+base_pkgng_cron_clean_hour: "5"
+base_pkgng_cron_clean_job: "/usr/sbin/pkg clean -qy"
+
+# cleanup
+base_freebsd_cleanup_enabled: no
+base_freebsd_cleanup_files:
+  - "/boot/loader.conf.local"
+  - "/etc/rc.conf.d/newsyslog"
+  - "/etc/rc.conf.d/sendmail"
+  - "/etc/rc.conf.d/syslogd"
+  - "/etc/rc.conf.local"
+  - "/etc/sysctl.conf.local"
+
+# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# eof

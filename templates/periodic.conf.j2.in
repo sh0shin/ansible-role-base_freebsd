@@ -1,0 +1,35 @@
+# {{ base_periodic_cfg_file }}
+# {{ ansible_managed }}
+
+{# base_periodic_cfg_defaults                         #}
+{% for opt, val in base_periodic_cfg_defaults.items() %}
+{%  if base_periodic_cfg[opt] is defined              %}
+{%    set val = base_periodic_cfg[opt]                %}
+{%  endif                                             %}
+{%  if val is sameas true                             %}
+{{ opt }}="YES"
+{%  elif val is sameas false                          %}
+{{ opt }}="NO"
+{%  elif val is number                                %}
+{{ opt }}={{ val }}
+{%  elif val is string                                %}
+{{ opt }}="{{ val }}"
+{%  endif                                             %}
+{% endfor                                             %}
+{# base_periodic_cfg                                  #}
+{% for opt, val in base_periodic_cfg.items()          %}
+{%  if opt not in base_periodic_cfg_defaults          %}
+{%    if val is sameas true                           %}
+{{ opt }}="YES"
+{%    elif val is sameas false                        %}
+{{ opt }}="NO"
+{%    elif val is number                              %}
+{{ opt }}={{ val }}
+{%    elif val is string                              %}
+{{ opt }}="{{ val }}"
+{%    endif                                           %}
+{%  endif                                             %}
+{% endfor                                             %}
+
+# vim: set sw=2 ts=2 et :
+# eof

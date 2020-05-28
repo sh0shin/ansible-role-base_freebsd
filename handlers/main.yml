@@ -1,0 +1,42 @@
+---
+
+# locale/login
+- name: update_login_database
+  command: cap_mkdb '{{ base_login_cfg_file }}'
+
+# timezone
+- name: adjust_kernel_timezone
+  command: adjkerntz -a
+
+# resolvconf
+- name: update_resolvconf
+  command: resolvconf -u
+
+# sysctl
+- name: restart_sysctl
+  service:
+    name: '{{ base_sysctl_service }}'
+    state: restarted
+
+# newsyslog
+- name: restart_newsyslog
+  service:
+    name: newsyslog
+    state: restarted
+  when: base_newsyslog_enabled
+
+# syslogd
+- name: restart_syslogd
+  service:
+    name: syslogd
+    state: restarted
+  when: base_syslogd_enabled
+
+- name: stop_syslogd
+  service:
+    name: syslogd
+    state: stopped
+  when: not base_syslogd_enabled
+
+# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# eof

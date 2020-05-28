@@ -1,0 +1,115 @@
+{# ipv4_interface                                                                         #}
+{% if base_ipv4_interface is defined                                                      %}
+{%  set _ipv4_interface = base_ipv4_interface                                             %}
+{% elif ansible_default_ipv4 is defined and ansible_default_ipv4['interface'] is defined  %}
+{%  set _ipv4_interface = ansible_default_ipv4['interface']                               %}
+{% elif ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined  %}
+{%  set _ipv4_interface = ansible_default_ipv6['interface']                               %}
+{% else                                                                                   %}
+{%  set _ipv4_interface = "DEFAULT"                                                       %}
+{% endif                                                                                  %}
+{# ipv6_interface                                                                         #}
+{% if base_ipv6_interface is defined                                                      %}
+{%  set _ipv6_interface = base_ipv6_interface                                             %}
+{% elif ansible_default_ipv6 is defined and ansible_default_ipv6['interface'] is defined  %}
+{%  set _ipv6_interface = ansible_default_ipv6['interface']                               %}
+{% elif ansible_default_ipv4 is defined and ansible_default_ipv4['interface'] is defined  %}
+{%  set _ipv6_interface = ansible_default_ipv4['interface']                               %}
+{% else                                                                                   %}
+{%  set _ipv6_interface = ''                                                              %}
+{% endif                                                                                  %}
+{# ipv4_address/netmask                                                                   #}
+{% if base_ipv4_address is defined and base_ipv4_netmask is defined                       %}
+{%  set _ipv4_config = 'inet ' ~ base_ipv4_address ~ ' netmask ' ~ base_ipv4_netmask      %}
+{% else                                                                                   %}
+{%  set _ipv4_config = 'inet dhcp'                                                        %}
+{% endif                                                                                  %}
+{#  ipv4_gateway                                                                          #}
+{% if base_ipv4_gateway is defined                                                        %}
+{%  set _ipv4_gateway = base_ipv4_gateway                                                 %}
+{% else                                                                                   %}
+{%  set _ipv4_gateway = ''                                                                %}
+{% endif                                                                                  %}
+{# ipv6_address/prefixlen                                                                 #}
+{% if base_ipv6_address is defined and base_ipv6_prefixlen is defined                     %}
+{%  set _ipv6_config = 'inet6 ' ~ base_ipv6_address ~ ' prefixlen ' ~ base_ipv6_prefixlen %}
+{% else                                                                                   %}
+{%  set _ipv6_config = 'inet6'                                                            %}
+{% endif                                                                                  %}
+{# ipv6_gateway                                                                           #}
+{% if base_ipv6_gateway is defined                                                        %}
+{%  set _ipv6_gateway = base_ipv6_gateway                                                 %}
+{% else                                                                                   %}
+{%  set _ipv6_gateway = ''                                                                %}
+{% endif                                                                                  %}
+{# ipv6_flags                                                                             #}
+{% if base_ipv6_flags                                                                     %}
+{%  set _ipv6_config = _ipv6_config ~ ' ' ~ base_ipv6_flags | join(' ')                   %}
+{% endif                                                                                  %}
+{# interface group                                                                        #}
+{% if base_interface_group                                                                %}
+{%  set _ipv4_config = _ipv4_config ~ ' group ' ~ base_interface_group                    %}
+{%  set _ipv6_config = _ipv6_config ~ ' group ' ~ base_interface_group                    %}
+{% endif                                                                                  %}
+# {{ base_rc_cfg_file }}
+# {{ ansible_managed }}
+
+# network
+{% if _ipv4_interface                                                                     %}
+ifconfig_{{ _ipv4_interface }}="{{ _ipv4_config }}"
+{% endif                                                                                  %}
+{% if _ipv4_gateway                                                                       %}
+defaultrouter="{{ _ipv4_gateway }}"
+{% endif                                                                                  %}
+{% if _ipv6_interface                                                                     %}
+ifconfig_{{ _ipv6_interface }}_ipv6="{{ _ipv6_config }}"
+{% endif                                                                                  %}
+{% if _ipv6_gateway                                                                       %}
+ipv6_defaultrouter="{{ _ipv6_gateway }}"
+{% endif                                                                                  %}
+{# static routes                                                                          #}
+{% if base_static_routes                                                                  %}
+{%  set _static_route_names = []                                                          %}
+{%  for route in base_static_routes                                                       %}
+{%    set _static_route_names = _static_route_names.append(route.name)                    %}
+route_{{ route.name }}="{{ route.route }}"
+{%  endfor                                                                                %}
+static_routes="{{ _static_route_names | join(' ') }}"
+{% endif                                                                                  %}
+
+# kld
+kld_list="{{ base_kld_list | join(' ') }}"
+
+# settings
+{# base_rc_cfg_defaults                         #}
+{% for opt, val in base_rc_cfg_defaults.items() %}
+{%  if base_rc_cfg[opt] is defined              %}
+{%    set val = base_rc_cfg[opt]                %}
+{%  endif                                       %}
+{%  if val is sameas true                       %}
+{{ opt }}="YES"
+{%  elif val is sameas false                    %}
+{{ opt }}="NO"
+{%  elif val is number                          %}
+{{ opt }}={{ val }}
+{%  elif val is string                          %}
+{{ opt }}="{{ val }}"
+{%  endif                                       %}
+{% endfor                                       %}
+{# base_rc_cfg                                  #}
+{% for opt, val in base_rc_cfg.items()          %}
+{%  if opt not in base_rc_cfg_defaults          %}
+{%    if val is sameas true                     %}
+{{ opt }}="YES"
+{%    elif val is sameas false                  %}
+{{ opt }}="NO"
+{%    elif val is number                        %}
+{{ opt }}={{ val }}
+{%    elif val is string                        %}
+{{ opt }}="{{ val }}"
+{%    endif                                     %}
+{%  endif                                       %}
+{% endfor                                       %}
+
+# vim: set sw=2 ts=2 et :
+# eof

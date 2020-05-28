@@ -1,0 +1,453 @@
+---
+
+# forced os variables
+- name: os forced variables
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_distribution }}-{{ ansible_machine | default("none") }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release | default(0) }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - 'main.yml'
+      paths:
+        - 'vars'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# pkgng config
+- name: pkgng config
+  template:
+    dest: '{{ base_pkgng_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_pkgng_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_pkgng_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_pkgng_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_pkgng_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "pkg.conf"
+    tpl_presence: '{{ base_pkgng_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# pkgng repos
+- name: pkgng repos (directory)
+  file:
+    dest: '{{ base_pkgng_repos_freebsd_file | dirname }}'
+    state: directory
+    mode: '{{ base_pkgng_repos_dir_mode | default(base_freebsd_dir_mode) }}'
+    owner: '{{ base_pkgng_repos_dir_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_repos_dir_group | default(base_freebsd_group) }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: pkgng repos freebsd (template)
+  template:
+    dest: '{{ base_pkgng_repos_freebsd_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_pkgng_repos_freebsd_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_pkgng_repos_freebsd_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_repos_freebsd_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_pkgng_repos_freebsd_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_pkgng_repos_freebsd_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "FreeBSD.conf"
+    tpl_presence: '{{ base_pkgng_repos_freebsd_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# packages
+- name: packages repo
+  pkgng:
+    name: '{{ base_freebsd_packages_repo | default([]) }}'
+    state: '{{ base_freebsd_packages_repo_state | default("latest") }}'
+    cached: false
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: packages
+  pkgng:
+    name: '{{ base_freebsd_packages | default([]) }}'
+    state: '{{ base_freebsd_packages_state | default("latest") }}'
+    cached: false
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: packages local
+  pkgng:
+    name: '{{ base_freebsd_packages_local | default([]) }}'
+    state: '{{ base_freebsd_packages_local_state | default("latest") }}'
+    cached: false
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# hostname
+- name: hostname
+  hostname:
+    name: '{{ base_hostname }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# hosts
+- name: hosts (template)
+  template:
+    dest: '{{ base_hosts_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_hosts_file_mode | default(base_freebsd_file_mode)   }}'
+    owner: '{{ base_hosts_file_owner | default(base_freebsd_owner)  }}'
+    group: '{{ base_hosts_file_group | default(base_freebsd_group)  }}'
+    backup: '{{ base_hosts_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_hosts_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "hosts"
+    tpl_presence: '{{ base_hosts_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# timezone
+- name: timezone
+  timezone:
+    name: '{{ base_timezone }}'
+  notify:
+    - adjust_kernel_timezone
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# locale
+- name: login locale
+  blockinfile:
+    dest: '{{ base_login_cfg_file }}'
+    insertafter: "^default:\\\\$"
+    block: "\t:lang={{ base_login_cfg_lang }}:\\\n\t:charset={{ base_login_cfg_charset }}:\\"
+    marker: "\t#: {mark} ANSIBLE MANAGED BLOCK :\\"
+    backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
+  notify:
+    - update_login_database
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# umask
+- name: login umask
+  lineinfile:
+    path:  '{{ base_login_cfg_file }}'
+    regexp: '^\t:umask=[0-9]+:'
+    line: "\t:umask={{ base_login_cfg_umask }}:"
+    backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
+  notify:
+    - update_login_database
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# newsyslog
+- name: newsyslog config (template)
+  debug:
+    msg: 'TODO'
+  notify:
+    - restart_newsyslog
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_newsyslog_enabled
+  tags: [ base-freebsd ]
+
+- name: newsyslog crontab
+  replace:
+    path: '/etc/crontab'
+    regexp: 'newsyslog(.*)$'
+    replace: 'newsyslog {{ base_newsyslog_crontab_flags }}'
+    backup: yes
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_newsyslog_enabled
+  tags: [ base-freebsd ]
+
+# syslogd
+- name: syslogd config
+  debug:
+    msg: 'TODO'
+  notify:
+    - restart_syslogd
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_syslogd_enabled
+  tags: [ base-freebsd ]
+
+# rc + network
+- name: rc.conf (template)
+  template:
+    dest: '{{ base_rc_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_rc_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_rc_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_rc_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_rc_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_rc_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "rc.conf"
+    tpl_presence: '{{ base_rc_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  register: base_rc
+  notify:
+    - restart_newsyslog
+    - restart_syslogd
+    - stop_syslogd
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# dns resolvconf
+- name: dns resolvconf (template)
+  template:
+    dest: '{{ base_dns_resolvconf_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_dns_resolvconf_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_dns_resolvconf_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_dns_resolvconf_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_dns_resolvconf_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_dns_resolvconf_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "resolvconf.conf"
+    tpl_presence: '{{ base_dns_resolvconf_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  notify:
+    - update_resolvconf
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# sysctl
+- name: sysctl (template)
+  template:
+    dest: '{{ base_sysctl_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_sysctl_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_sysctl_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_sysctl_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_sysctl_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_sysctl_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "sysctl.conf"
+    tpl_presence: '{{ base_sysctl_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  notify:
+    - restart_sysctl
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# fstab
+# proc /proc proc defaults,nosuid,nodev,noexec,hidepid=2 0 0
+#- name: fstab proc hidepid=2
+#  mount:
+#    name: "/proc"
+#    src: "proc"
+#    fstype: "proc"
+#    opts: "defaults,nosuid,nodev,noexec,hidepid=2"
+#    state: mounted
+#    backup: true
+#  when: base_freebsd_enabled
+#        and ansible_os_family | string in base_freebsd_os_family_supported
+#        and base_fstab_proc_hidepid
+#  tags: [ base-freebsd ]
+
+# boot
+# loader
+- name: loader (template)
+  template:
+    dest: '{{ base_loader_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_loader_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_loader_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_loader_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_loader_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_loader_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "loader.conf"
+    tpl_presence: '{{ base_loader_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# periodic
+- name: periodic (template)
+  template:
+    dest: '{{ base_periodic_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_periodic_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_periodic_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_periodic_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_periodic_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_periodic_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: '{{ base_periodic_cfg_file | basename }}'
+    tpl_presence: '{{ base_periodic_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# flush
+- name: flush handlers
+  meta: flush_handlers
+
+# pkgng cron
+- name: pkgng cron update
+  cron:
+    name: '{{ base_pkgng_cron_update_name }}'
+    minute: '{{ base_pkgng_cron_update_minute }}'
+    hour: '{{ base_pkgng_cron_update_hour }}'
+    job: '{{ base_pkgng_cron_update_job }}'
+  when: base_freebsd_enabled
+        and base_pkgng_cron_update_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: pkgng cron upgrade
+  cron:
+    name: '{{ base_pkgng_cron_upgrade_name }}'
+    minute: '{{ base_pkgng_cron_upgrade_minute }}'
+    hour: '{{ base_pkgng_cron_upgrade_hour }}'
+    job: '{{ base_pkgng_cron_upgrade_job }}'
+  when: base_freebsd_enabled
+        and base_pkgng_cron_upgrade_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: pkgng cron clean
+  cron:
+    name: '{{ base_pkgng_cron_clean_name }}'
+    minute: '{{ base_pkgng_cron_clean_minute }}'
+    hour: '{{ base_pkgng_cron_clean_hour }}'
+    job: '{{ base_pkgng_cron_clean_job }}'
+  when: base_freebsd_enabled
+        and base_pkgng_cron_clean_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+# cleanup
+- name: cleanup (old base freebsd versions)
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ base_freebsd_cleanup_files }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_freebsd_cleanup_enabled
+  tags: [ base-freebsd ]
+
+# reboot TODO
+#- name: reboot (if required)
+#  reboot:
+#  when: base_freebsd_enabled
+#        and ansible_os_family | string in base_freebsd_os_family_supported
+#  tags: [ base-freebsd ]
+
+# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# eof

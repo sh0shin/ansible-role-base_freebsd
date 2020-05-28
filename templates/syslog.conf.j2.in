@@ -1,0 +1,25 @@
+# /etc/syslog.conf
+# Ansible managed
+
+!-devd
+
+*.err;kern.warning                                                      /dev/console
+*.*;auth.none;authpriv.none;console.none;cron.none;mail.none;kern.none  -/var/log/messages
+auth.*;authpriv.*                                                       -/var/log/auth.log
+console.*                                                               -/var/log/console.log
+cron.*                                                                  -/var/log/cron
+kern.*                                                                  -/var/log/kernel
+mail.*                                                                  -/var/log/maillog
+security.*                                                              -/var/log/security
+*.emerg                                                                 *
+
+!devd
+*.>=notice                                                              -/var/log/devd.log
+
+!*
+
+include /etc/syslog.d
+include /usr/local/etc/syslog.d
+
+# vim: set sw=2 ts=2 et :
+# eof
