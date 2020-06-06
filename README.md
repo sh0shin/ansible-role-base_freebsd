@@ -5,15 +5,14 @@ FreeBSD Base settings
 `TODO`
 
 ## Role Variables
-`TODO`
+See `defaults/main.yml` for now.
 
 ## Dependencies
 `TODO`
 
-
 ## Example Playbook
 ```yaml
-- hosts: all
+- hosts: freebsd
   roles:
     - { role: sh0shin.base_freebsd }
 ```
