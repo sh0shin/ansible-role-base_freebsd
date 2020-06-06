@@ -1,25 +1,33 @@
-# /etc/syslog.conf
-# Ansible managed
+# {{ base_syslogd_cfg_file }}
+# {{ ansible_managed }}
 
-!-devd
-
-*.err;kern.warning                                                      /dev/console
-*.*;auth.none;authpriv.none;console.none;cron.none;mail.none;kern.none  -/var/log/messages
-auth.*;authpriv.*                                                       -/var/log/auth.log
-console.*                                                               -/var/log/console.log
-cron.*                                                                  -/var/log/cron
-kern.*                                                                  -/var/log/kernel
-mail.*                                                                  -/var/log/maillog
-security.*                                                              -/var/log/security
-*.emerg                                                                 *
-
-!devd
-*.>=notice                                                              -/var/log/devd.log
+{# base_syslogd_cfg_defaults                                                  #}
+{% for logfile, facility in base_syslogd_cfg_defaults.items()                 %}
+{%  if base_syslogd_cfg[logfile] is defined                                   %}
+{%    set facility = base_syslogd_cfg[logfile]                                %}
+{%  endif                                                                     %}
+{%  if logfile is search("NONE_.*") or logfile is search("ONLY_.*")           %}
+{{ facility }}
+{%  else                                                                      %}
+{{ facility }} {{ logfile }}
+{%  endif                                                                     %}
+{% endfor                                                                     %}
+{# base_syslogd_cfg_logs                                                      #}
+{% for logfile, facility in base_syslogd_cfg.items()                          %}
+{%  if logfile not in base_syslogd_cfg_defaults                               %}
+{%    if logfile is search("NONE_.*") or logfile is search("ONLY_.*")         %}
+{{ facility }}
+{%    else                                                                    %}
+{{ facility }} {{ logfile }}
+{%    endif                                                                   %}
+{%  endif                                                                     %}
+{% endfor                                                                     %}
 
 !*
-
-include /etc/syslog.d
-include /usr/local/etc/syslog.d
+{# base_syslogd_cfg_includes                                                  #}
+{% for include in base_syslogd_cfg_includes                                   %}
+include {{ include }}
+{% endfor                                                                     %}
 
 # vim: set sw=2 ts=2 et :
 # eof

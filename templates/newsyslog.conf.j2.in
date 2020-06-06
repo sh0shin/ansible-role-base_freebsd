@@ -1,25 +1,25 @@
 # {{ base_newsyslog_cfg_file }}
 # {{ ansible_managed }}
 
-# logfilename           [owner:group]   mode count size when    flags [/pid_file] [sig_num]
-/var/log/auth.log       root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/console.log    root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/cron           root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/devd.log       root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/maillog        root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/messages       root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/security       root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/kernel         root:{{ base_newsyslog_group }}      640  8     1000 *       XC
-/var/log/pflog          root:{{ base_newsyslog_group }}      640  8     1000 *       XB    /var/run/pflogd.pid
+# logfilename [owner:group] mode count size when flags [/pid_file] [sig_num]
+{# base_newsyslog_cfg_defaults                                                #}
+{% for logfile, options in base_newsyslog_cfg_defaults.items()                %}
+{%  if base_newsyslog_cfg[logfile] is defined                                 %}
+{%    set options = base_newsyslog_cfg[logfile]                               %}
+{%  endif                                                                     %}
+{{ logfile }} {{ options | join(" ") }}
+{% endfor                                                                     %}
+{# base_newsyslog_cfg                                                         #}
+{% for logfile, options in base_newsyslog_cfg                                 %}
+{%  if logfile not in base_newsyslog_cfg_defaults                             %}
+{{ logfile }} {{ options | join(" ") }}
+{%  endif                                                                     %}
+{% endfor                                                                     %}
 
-/var/log/utx.log                                             644  3     *    @01T05  B
-
-/var/log/daily.log                                           640  7     *    @T00    XN
-/var/log/weekly.log                                          640  5     *    $W6D0   XN
-/var/log/monthly.log                                         640  12    *    $M1D0   XN
-
-<include> /etc/newsyslog.conf.d/*
-<include> /usr/local/etc/newsyslog.conf.d/*
+{# base_newsyslog_cfg_includes                                                #}
+{% for include in base_newsyslog_cfg_includes                                 %}
+<include> {{ include }}
+{% endfor                                                                     %}
 
 # vim: set sw=2 ts=2 et :
 # eof

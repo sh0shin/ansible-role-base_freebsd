@@ -97,17 +97,64 @@ base_login_cfg_umask: "022"
 base_newsyslog_enabled: yes
 base_newsyslog_flags: "-CN -t DEFAULT"
 base_newsyslog_crontab_flags: "-C -t DEFAULT"
-base_newsyslog_group: "operator"
-
 base_newsyslog_cfg_file: "/etc/newsyslog.conf"
 base_newsyslog_cfg: {}
+base_newsyslog_cfg_defaults:
+  # "logfilename": [ [owner:group] mode count size when flags [/pid_file] [sig_num] ]
+  #"/var/log/auth.log":    [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/console.log": [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/cron":        [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/debug.log":   [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/devd.log":    [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/kernel":      [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/maillog":     [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/messages":    [ root:operator, 640, 8, 1000, "*", XC ]
+  #"/var/log/security":    [ root:operator, 640, 8, 1000, "*", XC ]
+
+  "/var/log/auth.log":    [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/console.log": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/cron":        [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/debug.log":   [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/devd.log":    [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/kernel":      [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/maillog":     [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/messages":    [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/security":    [ root:operator, 640, 8, "*", "@T00", XC ]
+
+  "/var/log/pflog":       [ root:operator, 640, 8, "*", "@T00", XBC, /var/run/pflogd.pid ]
+  "/var/log/utx.log":     [ root:operator, 644, 3, "*", "@01T05", B ]
+
+  "/var/log/daily.log":   [ root:operator, 640, 7, "*", "@T00", XN ]
+  "/var/log/weekly.log":  [ root:operator, 640, 5, "*", "$W6D0", XN ]
+  "/var/log/monthly.log": [ root:operator, 640, 12, "*", "$M1D0", XN ]
+
+base_newsyslog_cfg_includes:
+  - "/etc/newsyslog.conf.d/*"
+  - "/usr/local/etc/newsyslog.conf.d/*"
 
 # syslogd
 base_syslogd_enabled: yes
 base_syslogd_flags: "-CTss"
-
 base_syslogd_cfg_file: "/etc/syslog.conf"
 base_syslogd_cfg: {}
+base_syslogd_cfg_defaults:
+  "NONE_DEVD": "!-devd" # Using special NONE_
+  "*": "*.emerg"
+  "/dev/console": "*.err;kern.warning"
+  "/var/log/auth.log": "auth.*;authpriv.*"
+  "/var/log/console.log": "console.*"
+  "/var/log/cron": "cron.*"
+  "/var/log/debug.log": "*.=debug"
+  "/var/log/kernel": "kern.*"
+  "/var/log/maillog": "mail.*"
+  "/var/log/security": "security.*"
+  "/var/log/messages": "*.*;auth.none;authpriv.none;console.none;cron.none;kern.none;mail.none;security.none"
+  "ONLY_DEVD": "!devd" # Using special ONLY_
+  "/var/log/devd.log": "*.>=notice"
+
+base_syslogd_cfg_includes:
+  - /etc/syslog.d
+  - /usr/local/etc/syslog.d
 
 # zfs
 base_zfs_enabled: yes

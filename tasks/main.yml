@@ -192,8 +192,29 @@
 
 # newsyslog
 - name: newsyslog config (template)
-  debug:
-    msg: 'TODO'
+  template:
+    dest: '{{ base_newsyslog_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_newsyslog_cfg_file_mode | default(base_freebsd_file_mode)   }}'
+    owner: '{{ base_newsyslog_cfg_file_owner | default(base_freebsd_owner)  }}'
+    group: '{{ base_newsyslog_cfg_file_group | default(base_freebsd_group)  }}'
+    backup: '{{ base_newsyslog_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_newsyslog_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: '{{ base_newsyslog_cfg_file | basename }}'
+    tpl_presence: '{{ base_newsyslog_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
   notify:
     - restart_newsyslog
   when: base_freebsd_enabled
@@ -214,8 +235,29 @@
 
 # syslogd
 - name: syslogd config
-  debug:
-    msg: 'TODO'
+  template:
+    dest: '{{ base_syslogd_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_syslogd_cfg_file_mode | default(base_freebsd_file_mode)   }}'
+    owner: '{{ base_syslogd_cfg_file_owner | default(base_freebsd_owner)  }}'
+    group: '{{ base_syslogd_cfg_file_group | default(base_freebsd_group)  }}'
+    backup: '{{ base_syslogd_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_syslogd_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: '{{ base_syslogd_cfg_file | basename }}'
+    tpl_presence: '{{ base_syslogd_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
   notify:
     - restart_syslogd
   when: base_freebsd_enabled
