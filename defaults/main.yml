@@ -132,6 +132,15 @@ base_newsyslog_cfg_includes:
   - "/etc/newsyslog.conf.d/*"
   - "/usr/local/etc/newsyslog.conf.d/*"
 
+base_newsyslog_includes_remove:
+  - "/etc/newsyslog.conf.d/amd.conf"
+  - "/etc/newsyslog.conf.d/ftp.conf"
+  - "/etc/newsyslog.conf.d/lpr.conf"
+  - "/etc/newsyslog.conf.d/opensm.conf"
+  - "/etc/newsyslog.conf.d/pf.conf"
+  - "/etc/newsyslog.conf.d/ppp.conf"
+  - "/etc/newsyslog.conf.d/sendmail.conf"
+
 # syslogd
 base_syslogd_enabled: yes
 base_syslogd_flags: "-CTss"
@@ -155,6 +164,11 @@ base_syslogd_cfg_defaults:
 base_syslogd_cfg_includes:
   - /etc/syslog.d
   - /usr/local/etc/syslog.d
+
+base_syslogd_includes_remove:
+  - "/etc/syslog.d/ftp.conf"
+  - "/etc/syslog.d/lpr.conf"
+  - "/etc/syslog.d/ppp.conf"
 
 # zfs
 base_zfs_enabled: yes

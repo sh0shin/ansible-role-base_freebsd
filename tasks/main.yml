@@ -222,6 +222,18 @@
         and base_newsyslog_enabled
   tags: [ base-freebsd ]
 
+- name: newsyslog includes (remove)
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ base_newsyslog_includes_remove }}'
+  notify:
+    - restart_newsyslog
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_newsyslog_enabled
+  tags: [ base-freebsd ]
+
 - name: newsyslog crontab
   replace:
     path: '/etc/crontab'
@@ -258,6 +270,18 @@
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
         - 'templates'
+  notify:
+    - restart_syslogd
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_syslogd_enabled
+  tags: [ base-freebsd ]
+
+- name: syslogd includes (remove)
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ base_syslogd_includes_remove }}'
   notify:
     - restart_syslogd
   when: base_freebsd_enabled
