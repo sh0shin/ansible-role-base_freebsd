@@ -21,6 +21,7 @@ base_freebsd_umask: "022"
 # packages
 base_freebsd_packages_repo: []
 base_freebsd_packages:
+  - archivers/gtar
   - converters/recode
   - editors/vim-console
   - misc/gnu-watch
