@@ -361,11 +361,11 @@ base_periodic_cfg_defaults:
 base_pkgng_cfg_file: "/usr/local/etc/pkg.conf"
 base_pkgng_cfg: {}
 base_pkgng_cfg_defaults:
-  AUTOCLEAN: no
-  CASE_SENSITIVE_MATCH: yes
-  HANDLE_RC_SCRIPTS: yes
-  REPO_AUTOUPDATE: no
-  SYSLOG: yes
+  autoclean: no
+  case_sensitive_match: yes
+  handle_rc_scripts: yes
+  repo_autoupdate: no
+  syslog: yes
 
 # pkg(ng) repos
 base_pkgng_repos_freebsd_file: "/usr/local/etc/pkg/repos/FreeBSD.conf"

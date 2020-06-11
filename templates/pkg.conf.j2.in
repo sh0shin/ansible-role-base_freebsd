@@ -6,25 +6,25 @@
 {%    set val = base_pkgng_config[opt]              %}
 {%  endif                                           %}
 {%  if val is sameas true                           %}
-{{ opt }} = true;
+{{ opt }}: yes
 {%  elif val is sameas false                        %}
-{{ opt }} = false;
+{{ opt }}: no
 {%  elif val is number                              %}
-{{ opt }} = {{ val }};
+{{ opt }}: {{ val }}
 {%  elif val is string                              %}
-{{ opt }} = "{{ val }}";
+{{ opt }}: "{{ val }}"
 {%  endif                                           %}
 {% endfor                                           %}
 {% for opt, val in base_pkgng_cfg.items()           %}
 {%  if opt not in base_pkgng_cfg_defaults           %}
 {%    if val is sameas true                         %}
-{{ opt }} = true;
+{{ opt }}: yes
 {%    elif val is sameas false                      %}
-{{ opt }} = false;
+{{ opt }}: no
 {%    elif val is number                            %}
-{{ opt }} = {{ val }};
+{{ opt }}: {{ val }}
 {%    elif val is string                            %}
-{{ opt }} = "{{ val }}";
+{{ opt }}: "{{ val }}"
 {%    endif                                         %}
 {%  endif                                           %}
 {% endfor                                           %}
