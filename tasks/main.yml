@@ -19,6 +19,20 @@
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 
+# zfs
+- name: zfs filesystems
+  zfs:
+    name: '{{ item.name }}'
+    state: '{{ item.state | default("present") }}'
+    origin: '{{ item.origin | default(omit) }}'
+    extra_zfs_properties:
+      '{{ item.properties | default(omit) }}'
+  loop: '{{ base_zfs_filesystems }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_zfs_enabled
+  tags: [ base-freebsd ]
+
 # pkgng config
 - name: pkgng config
   template:
