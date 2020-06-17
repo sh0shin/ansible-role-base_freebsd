@@ -3,8 +3,8 @@
 galaxy_info:
   role_name: base_freebsd
   author: Chris 'sh0shin' Frage
-  description: FreeBSD Base settings
-  company: EDV-BV GmbH
+  description: FreeBSD Base settings and packages
+  #company:
   #issue_tracker_url: http://example.com/issue/tracker
   license: BSD-3-Clause
 

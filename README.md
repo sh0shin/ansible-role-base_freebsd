@@ -1,5 +1,5 @@
 # Base FreeBSD
-FreeBSD Base settings
+FreeBSD Base settings and packages
 
 ## Requirements
 `TODO`
