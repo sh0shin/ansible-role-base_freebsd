@@ -17,7 +17,7 @@
         - 'vars'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags: [ base-freebsd, zfs ]
 
 # zfs
 - name: zfs filesystems
@@ -31,7 +31,7 @@
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
         and base_zfs_enabled
-  tags: [ base-freebsd ]
+  tags: [ base-freebsd, zfs ]
 
 # pkgng config
 - name: pkgng config
@@ -116,6 +116,15 @@
   pkgng:
     name: '{{ base_freebsd_packages | default([]) }}'
     state: '{{ base_freebsd_packages_state | default("latest") }}'
+    cached: false
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: packages devel
+  pkgng:
+    name: '{{ base_freebsd_packages_devel | default([]) }}'
+    state: '{{ base_freebsd_packages_devel_state | default("latest") }}'
     cached: false
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported

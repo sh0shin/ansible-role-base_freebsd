@@ -35,6 +35,10 @@ base_freebsd_packages:
   - sysutils/screen
   - sysutils/tree
 
+base_freebsd_packages_devel:
+  - devel/git
+  - devel/tig
+
 base_freebsd_packages_local: []
 
 # hostname
