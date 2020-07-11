@@ -1,0 +1,5 @@
+{% if base_boot_cfg                         %}
+{{ base_boot_cfg | join(' ') }}
+{% else                                     %}
+{{ base_boot_cfg_defaults | join(' ') }}
+{% endif                                    %}

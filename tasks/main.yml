@@ -453,6 +453,35 @@
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 
+# boot.config
+- name: boot config (template)
+  template:
+    dest: '{{ base_boot_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_boot_cfg_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_boot_cfg_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_boot_cfg_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_boot_cfg_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_boot_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: '{{ base_boot_cfg_file | basename }}'
+    tpl_presence: '{{ base_boot_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd, DEVEL ]
+
 # periodic
 - name: periodic (template)
   template:

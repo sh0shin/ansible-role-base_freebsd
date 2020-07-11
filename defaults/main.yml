@@ -304,7 +304,8 @@ base_sysctl_service: "sysctl"
 # boot
 base_boot_cfg_file: "/boot.config"
 base_boot_cfg: {}
-base_boot_cfg_defaults: {}
+base_boot_cfg_defaults:
+  - "-D"
 
 # loader
 base_loader_cfg_file: "/boot/loader.conf"
