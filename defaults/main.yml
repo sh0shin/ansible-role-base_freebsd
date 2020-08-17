@@ -41,6 +41,13 @@ base_freebsd_packages_devel:
 
 base_freebsd_packages_local: []
 
+# freebsd-update
+base_freebsd_update_cfg_file: "/etc/freebsd-update.conf"
+base_freebsd_update_components: # src is disabled per default
+  #- src
+  - world
+  - kernel
+
 # hostname
 base_hostname: '{{ inventory_hostname }}'
 base_hostname_short: '{{ inventory_hostname_short }}'

@@ -139,6 +139,17 @@
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 
+# freebsd-update
+- name: freebsd-update Components
+  lineinfile:
+    path: '{{ base_freebsd_update_cfg_file }}'
+    line: "Components {{ base_freebsd_update_components | join(' ') }}"
+    regex: '^Components .*'
+    backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
 # hostname
 - name: hostname
   hostname:
@@ -172,6 +183,17 @@
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
         - 'templates'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: hosts (freebsd-update.conf IgnorePaths)
+  lineinfile:
+    path: '{{ base_freebsd_update_cfg_file }}'
+    line: 'IgnorePaths {{ base_hosts_file }}'
+    regex: '^IgnorePaths {{ base_hosts_file }}'
+    insertafter: '^IgnorePaths.*$'
+    backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
@@ -268,6 +290,18 @@
         and base_newsyslog_enabled
   tags: [ base-freebsd ]
 
+- name: newsyslog (freebsd-update.conf IgnorePaths)
+  lineinfile:
+    path: '{{ base_freebsd_update_cfg_file }}'
+    line: 'IgnorePaths {{ base_newsyslog_cfg_file }}'
+    regex: '^IgnorePaths {{ base_newsyslog_cfg_file }}'
+    insertafter: '^IgnorePaths.*$'
+    backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_newsyslog_enabled
+  tags: [ base-freebsd ]
+
 # syslogd
 - name: syslogd config
   template:
@@ -307,6 +341,18 @@
   loop: '{{ base_syslogd_includes_remove }}'
   notify:
     - restart_syslogd
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and base_syslogd_enabled
+  tags: [ base-freebsd ]
+
+- name: syslogd (freebsd-update.conf IgnorePaths)
+  lineinfile:
+    path: '{{ base_freebsd_update_cfg_file }}'
+    line: 'IgnorePaths {{ base_syslogd_cfg_file }}'
+    regex: '^IgnorePaths {{ base_syslogd_cfg_file }}'
+    insertafter: '^IgnorePaths.*$'
+    backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
         and base_syslogd_enabled
@@ -404,6 +450,17 @@
         - 'templates'
   notify:
     - restart_sysctl
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
+- name: sysctl (freebsd-update.conf IgnorePaths)
+  lineinfile:
+    path: '{{ base_freebsd_update_cfg_file }}'
+    line: 'IgnorePaths {{ base_sysctl_cfg_file }}'
+    regex: '^IgnorePaths {{ base_sysctl_cfg_file }}'
+    insertafter: '^IgnorePaths.*$'
+    backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
