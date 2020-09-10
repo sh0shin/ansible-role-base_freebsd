@@ -579,8 +579,8 @@
     minute: '{{ base_pkgng_cron_update_minute }}'
     hour: '{{ base_pkgng_cron_update_hour }}'
     job: '{{ base_pkgng_cron_update_job }}'
+    state: '{{ base_pkgng_cron_update_state }}'
   when: base_freebsd_enabled
-        and base_pkgng_cron_update_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 
@@ -590,8 +590,8 @@
     minute: '{{ base_pkgng_cron_upgrade_minute }}'
     hour: '{{ base_pkgng_cron_upgrade_hour }}'
     job: '{{ base_pkgng_cron_upgrade_job }}'
+    state: '{{ base_pkgng_cron_upgrade_state }}'
   when: base_freebsd_enabled
-        and base_pkgng_cron_upgrade_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 
@@ -601,8 +601,8 @@
     minute: '{{ base_pkgng_cron_clean_minute }}'
     hour: '{{ base_pkgng_cron_clean_hour }}'
     job: '{{ base_pkgng_cron_clean_job }}'
+    state: '{{ base_pkgng_cron_clean_state }}'
   when: base_freebsd_enabled
-        and base_pkgng_cron_clean_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
 

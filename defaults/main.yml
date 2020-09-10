@@ -396,19 +396,19 @@ base_pkgng_repos_freebsd_mirror: "http://pkg.freebsd.org"
 base_pkgng_repos_freebsd_version: "latest"  # quarterly
 
 # pkg(ng) cron
-base_pkgng_cron_update_enabled: yes
+base_pkgng_cron_update_state: present
 base_pkgng_cron_update_name: "pkg daily update"
 base_pkgng_cron_update_minute: "37"
 base_pkgng_cron_update_hour: "3"
 base_pkgng_cron_update_job: "/usr/sbin/pkg update -q"
 
-base_pkgng_cron_upgrade_enabled: yes
+base_pkgng_cron_upgrade_state: present
 base_pkgng_cron_upgrade_name: "pkg daily upgrade"
 base_pkgng_cron_upgrade_minute: "42"
 base_pkgng_cron_upgrade_hour: "3"
 base_pkgng_cron_upgrade_job: "/usr/sbin/pkg upgrade -Uqn"
 
-base_pkgng_cron_clean_enabled: yes
+base_pkgng_cron_clean_state: present
 base_pkgng_cron_clean_name: "pkg daily clean"
 base_pkgng_cron_clean_minute: "40"
 base_pkgng_cron_clean_hour: "5"
