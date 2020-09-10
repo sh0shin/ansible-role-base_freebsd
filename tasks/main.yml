@@ -17,7 +17,7 @@
         - 'vars'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd, zfs ]
+  tags: [ base-freebsd, cron, zfs ]
 
 # zfs
 - name: zfs filesystems
@@ -582,7 +582,7 @@
     state: '{{ base_pkgng_cron_update_state }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags: [ base-freebsd, cron ]
 
 - name: pkgng cron upgrade
   cron:
@@ -593,7 +593,7 @@
     state: '{{ base_pkgng_cron_upgrade_state }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags: [ base-freebsd, cron ]
 
 - name: pkgng cron clean
   cron:
@@ -604,7 +604,7 @@
     state: '{{ base_pkgng_cron_clean_state }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags: [ base-freebsd, cron ]
 
 # cleanup
 - name: cleanup (old base freebsd versions)
