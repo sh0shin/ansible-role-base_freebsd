@@ -28,6 +28,8 @@
     extra_zfs_properties:
       '{{ item.properties | default(omit) }}'
   loop: '{{ base_zfs_filesystems }}'
+  loop_control:
+    label: '{{ item.name }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
         and base_zfs_enabled
