@@ -414,6 +414,13 @@ base_pkgng_cron_clean_minute: "40"
 base_pkgng_cron_clean_hour: "5"
 base_pkgng_cron_clean_job: "/usr/sbin/pkg clean -qy"
 
+# freebsd-update cron
+base_freebsd_update_cron_state: present
+base_freebsd_update_cron_name: "freebsd-update daily"
+base_freebsd_update_cron_minute: "42"
+base_freebsd_update_cron_hour: "1"
+base_freebsd_update_cron_job: "/usr/sbin/freebsd-update cron"
+
 # cleanup
 base_freebsd_cleanup_enabled: no
 base_freebsd_cleanup_files:

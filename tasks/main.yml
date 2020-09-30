@@ -608,6 +608,18 @@
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd, cron ]
 
+# freebsd-update cron
+- name: freebsd-update cron
+  cron:
+    name: '{{ base_freebsd_update_cron_name }}'
+    minute: '{{ base_freebsd_update_cron_minute }}'
+    hour: '{{ base_freebsd_update_cron_hour }}'
+    job: '{{ base_freebsd_update_cron_job }}'
+    state: '{{ base_freebsd_update_cron_state }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd, cron ]
+
 # cleanup
 - name: cleanup (old base freebsd versions)
   file:
