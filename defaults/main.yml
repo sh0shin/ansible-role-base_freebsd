@@ -247,12 +247,12 @@ base_rc_cfg_defaults:
   keybell: "quiet.off"
   blanktime: 30
   # sshd
-  sshd_enable: yes
-  sshd_dsa_enable: no
-  sshd_ecdsa_enable: no
-  sshd_ed25519_enable: yes
-  sshd_rsa1_enable: no
-  sshd_rsa_enable: yes
+  #sshd_enable: yes
+  #sshd_dsa_enable: no
+  #sshd_ecdsa_enable: no
+  #sshd_ed25519_enable: yes
+  #sshd_rsa1_enable: no
+  #sshd_rsa_enable: yes
   # newsyslog
   newsyslog_enable: '{{ base_newsyslog_enabled }}'
   newsyslog_flags: '{{ base_newsyslog_flags }}'
