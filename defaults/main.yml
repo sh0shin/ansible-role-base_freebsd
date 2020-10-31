@@ -21,23 +21,23 @@ base_freebsd_umask: "022"
 # packages
 base_freebsd_packages_repo: []
 base_freebsd_packages:
-  - archivers/gtar
-  - converters/recode
-  - editors/vim-console
-  - misc/gnu-watch
-  - net/rsync
-  - shells/bash
-  - shells/bash-completion
-  - shells/zsh
-  - shells/zsh-completions
-  - sysutils/ccze
-  - sysutils/lsof
-  - sysutils/screen
-  - sysutils/tree
+  - bash
+  - bash-completion
+  - ccze
+  - gnu-watch
+  - gtar
+  - lsof
+  - recode
+  - rsync
+  - screen
+  - tree
+  - vim-console
+  - zsh
+  - zsh-completions
 
 base_freebsd_packages_devel:
-  - devel/git
-  - devel/tig
+  - git
+  - tig
 
 base_freebsd_packages_local: []
 
