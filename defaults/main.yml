@@ -196,6 +196,18 @@ base_zfs_filesystems:
 
 # see https://docs.ansible.com/ansible/latest/modules/zfs_module.html
 
+# mount
+base_mount_fstab: "/etc/fstab"
+base_mount_points: []
+  #- src: /dev/da1
+  #  path: none
+  #  fstype: swap
+  #  opts:
+  #    - sw
+  #  dump: 0
+  #  passno: 0
+  #  state: present
+
 # kld
 base_kld_list: []
 

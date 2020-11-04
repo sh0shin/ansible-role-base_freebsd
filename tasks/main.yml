@@ -35,6 +35,24 @@
         and base_zfs_enabled
   tags: [ base-freebsd, zfs ]
 
+# mount
+- name: mount points (fstab)
+  mount:
+    src: '{{ item.src }}'
+    path: '{{ item.path }}'
+    fstype: '{{ item.fstype }}'
+    opts: '{{ item.opts | join(",") }}'
+    dump: '{{ item.dump | default(0) }}'
+    passno: '{{ item.passno | default(0) }}'
+    state: '{{ item.state | default("present") }}'
+    fstab: '{{ base_mount_fstab }}'
+  loop: '{{ base_mount_points }}'
+  loop_control:
+    label: '{{ item.src }} {{ item.path }} {{ item.fstype }} {{ item.opts | join(",") }} {{ item.dump | default(0) }} {{ item.passno | default(0) }}'
+  when: base_freebsd_enabled
+    and ansible_os_family | string in base_freebsd_os_family_supported
+  tags: [ base-freebsd ]
+
 # pkgng config
 - name: pkgng config
   template:
