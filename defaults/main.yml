@@ -30,6 +30,7 @@ base_freebsd_packages:
   - recode
   - rsync
   - screen
+  - tmux
   - tree
   - vim-console
   - zsh
