@@ -1,3 +1,5 @@
+{# counter                                                                                #}
+{% set c = namespace(i=0)                                                                 %}
 {# ipv4_interface                                                                         #}
 {% if base_ipv4_interface is defined                                                      %}
 {%  set _ipv4_interface = base_ipv4_interface                                             %}
@@ -24,7 +26,15 @@
 {% else                                                                                   %}
 {%  set _ipv4_config = 'inet dhcp'                                                        %}
 {% endif                                                                                  %}
-{#  ipv4_gateway                                                                          #}
+{# ipv4_aliases                                                                           #}
+{% set _ipv4_aliases = []                                                                 %}
+{% if base_ipv4_aliases is defined                                                        %}
+{%  for alias in base_ipv4_aliases                                                        %}
+{%    set _ipv4_aliases =
+      _ipv4_aliases.append('inet ' ~ alias.address ~ ' netmask ' ~ alias.netmask)         %}
+{%  endfor                                                                                %}
+{% endif                                                                                  %}
+{# ipv4_gateway                                                                           #}
 {% if base_ipv4_gateway is defined                                                        %}
 {%  set _ipv4_gateway = base_ipv4_gateway                                                 %}
 {% else                                                                                   %}
@@ -35,6 +45,14 @@
 {%  set _ipv6_config = 'inet6 ' ~ base_ipv6_address ~ ' prefixlen ' ~ base_ipv6_prefixlen %}
 {% else                                                                                   %}
 {%  set _ipv6_config = 'inet6'                                                            %}
+{% endif                                                                                  %}
+{# ipv6_aliases                                                                           #}
+{% set _ipv6_aliases = []                                                                 %}
+{% if base_ipv6_aliases is defined                                                        %}
+{%  for alias in base_ipv6_aliases                                                        %}
+{%    set _ipv6_aliases =
+      _ipv6_aliases.append('inet6 ' ~ alias.address ~ ' prefixlen ' ~ alias.prefixlen)    %}
+{%  endfor                                                                                %}
 {% endif                                                                                  %}
 {# ipv6_gateway                                                                           #}
 {% if base_ipv6_gateway is defined                                                        %}
@@ -51,19 +69,39 @@
 {%  set _ipv4_config = _ipv4_config ~ ' group ' ~ base_interface_group                    %}
 {%  set _ipv6_config = _ipv6_config ~ ' group ' ~ base_interface_group                    %}
 {% endif                                                                                  %}
+{# reset counter                                                                          #}
+{% set c = namespace(i=0)                                                                 %}
 # {{ base_rc_cfg_file }}
 # {{ ansible_managed }}
 
 # network
+{# ipv4_config                                                                            #}
 {% if _ipv4_interface                                                                     %}
 ifconfig_{{ _ipv4_interface }}="{{ _ipv4_config }}"
 {% endif                                                                                  %}
+{# ipv4_aliases                                                                           #}
+{% if _ipv4_aliases                                                                       %}
+{%  for alias in _ipv4_aliases                                                            %}
+ifconfig_{{ _ipv4_interface }}_alias{{ c.i }}="{{ alias }}"
+{%    set c.i = c.i + 1                                                                   %}
+{%  endfor                                                                                %}
+{% endif                                                                                  %}
+{# ipv4_gateway                                                                           #}
 {% if _ipv4_gateway                                                                       %}
 defaultrouter="{{ _ipv4_gateway }}"
 {% endif                                                                                  %}
+{# ipv6_config                                                                            #}
 {% if _ipv6_interface                                                                     %}
 ifconfig_{{ _ipv6_interface }}_ipv6="{{ _ipv6_config }}"
 {% endif                                                                                  %}
+{# ipv6_aliases                                                                           #}
+{% if _ipv6_aliases                                                                       %}
+{%  for alias in _ipv6_aliases                                                            %}
+ifconfig_{{ _ipv6_interface }}_alias{{ c.i }}="{{ alias }}"
+{%    set c.i = c.i + 1                                                                   %}
+{%  endfor                                                                                %}
+{% endif                                                                                  %}
+{# ipv6_gateway                                                                           #}
 {% if _ipv6_gateway                                                                       %}
 ipv6_defaultrouter="{{ _ipv6_gateway }}"
 {% endif                                                                                  %}

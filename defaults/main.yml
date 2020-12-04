@@ -69,6 +69,16 @@ base_ipv6_flags:
 
 base_interface_group: ""
 
+base_ipv4_aliases: []
+  #- address:
+  #  netmask:
+  # ...
+
+base_ipv6_aliases: []
+  #- address:
+  #  prefixlen:
+  # ...
+
 base_static_routes: []
 #  - name: "route1"
 #    route: "-host 1.2.3.4 -interface em0"
@@ -444,5 +454,5 @@ base_freebsd_cleanup_files:
   - "/etc/rc.conf.local"
   - "/etc/sysctl.conf.local"
 
-# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
 # eof
