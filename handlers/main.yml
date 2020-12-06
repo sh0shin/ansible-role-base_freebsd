@@ -38,5 +38,5 @@
     state: stopped
   when: not base_syslogd_enabled
 
-# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
 # eof
