@@ -16,13 +16,16 @@ galaxy_info:
     - name: FreeBSD
       versions:
         - 11.3
+        #- 11.4
         - 12.1
+        #- 12.2
 
   galaxy_tags:
     - freebsd
     - base
+    - zfs
 
 dependencies: []
 
-# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
 # eof
