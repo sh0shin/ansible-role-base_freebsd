@@ -14,6 +14,7 @@
         - '{{ ansible_os_family }}.yml'
         - 'main.yml'
       paths:
+        #- '{{ inventory_dir }}/vars'
         - 'vars'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -77,6 +78,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -117,6 +119,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -202,6 +205,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -279,6 +283,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   notify:
     - restart_newsyslog
@@ -346,6 +351,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   notify:
     - restart_syslogd
@@ -402,6 +408,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   register: base_rc
   notify:
@@ -436,6 +443,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   notify:
     - update_resolvconf
@@ -467,6 +475,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   notify:
     - restart_sysctl
@@ -525,6 +534,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -554,6 +564,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
@@ -583,6 +594,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
