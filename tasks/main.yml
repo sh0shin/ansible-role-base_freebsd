@@ -6,6 +6,9 @@
   vars:
     params:
       files:
+        - '{{ role_name }}-{{ inventory_hostname }}.yml'
+        - '{{ role_name }}-{{ inventory_hostname_short }}.yml'
+        - '{{ role_name }}.yml'
         - '{{ ansible_distribution }}-{{ ansible_machine | default("none") }}.yml'
         - '{{ ansible_distribution }}-{{ ansible_distribution_release | default(0) }}.yml'
         - '{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.yml'
@@ -14,7 +17,7 @@
         - '{{ ansible_os_family }}.yml'
         - 'main.yml'
       paths:
-        #- '{{ inventory_dir }}/vars'
+        - '{{ inventory_dir }}/vars'
         - 'vars'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
