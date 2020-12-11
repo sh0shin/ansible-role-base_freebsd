@@ -44,7 +44,7 @@ base_freebsd_packages_local: []
 
 # freebsd-update
 base_freebsd_update_cfg_file: "/etc/freebsd-update.conf"
-base_freebsd_update_components: # src is disabled per default
+base_freebsd_update_components:
   #- src
   - world
   - kernel
@@ -70,14 +70,14 @@ base_ipv6_flags:
 base_interface_group: ""
 
 base_ipv4_aliases: []
-  #- address:
-  #  netmask:
-  # ...
+#  - address:
+#    netmask:
+#  - ...
 
 base_ipv6_aliases: []
-  #- address:
-  #  prefixlen:
-  # ...
+#  - address:
+#    prefixlen:
+#  - ...
 
 base_static_routes: []
 #  - name: "route1"
@@ -134,21 +134,21 @@ base_newsyslog_cfg_defaults:
   #"/var/log/messages":    [ root:operator, 640, 8, 1000, "*", XC ]
   #"/var/log/security":    [ root:operator, 640, 8, 1000, "*", XC ]
 
-  "/var/log/auth.log":    [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/auth.log": [ root:operator, 640, 8, "*", "@T00", XC ]
   "/var/log/console.log": [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/cron":        [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/debug.log":   [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/devd.log":    [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/kernel":      [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/maillog":     [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/messages":    [ root:operator, 640, 8, "*", "@T00", XC ]
-  "/var/log/security":    [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/cron": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/debug.log": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/devd.log": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/kernel": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/maillog": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/messages": [ root:operator, 640, 8, "*", "@T00", XC ]
+  "/var/log/security": [ root:operator, 640, 8, "*", "@T00", XC ]
 
-  "/var/log/pflog":       [ root:operator, 640, 8, "*", "@T00", XBC, /var/run/pflogd.pid ]
-  "/var/log/utx.log":     [ root:operator, 644, 3, "*", "@01T05", B ]
+  "/var/log/pflog": [ root:operator, 640, 8, "*", "@T00", XBC, /var/run/pflogd.pid ]
+  "/var/log/utx.log": [ root:operator, 644, 3, "*", "@01T05", B ]
 
-  "/var/log/daily.log":   [ root:operator, 640, 7, "*", "@T00", XN ]
-  "/var/log/weekly.log":  [ root:operator, 640, 5, "*", "$W6D0", XN ]
+  "/var/log/daily.log": [ root:operator, 640, 7, "*", "@T00", XN ]
+  "/var/log/weekly.log": [ root:operator, 640, 5, "*", "$W6D0", XN ]
   "/var/log/monthly.log": [ root:operator, 640, 12, "*", "$M1D0", XN ]
 
 base_newsyslog_cfg_includes:
@@ -170,7 +170,8 @@ base_syslogd_flags: "-CTss"
 base_syslogd_cfg_file: "/etc/syslog.conf"
 base_syslogd_cfg: {}
 base_syslogd_cfg_defaults:
-  "NONE_DEVD": "!-devd" # Using special NONE_
+  # Using special NONE_
+  "NONE_DEVD": "!-devd"
   "*": "*.emerg"
   "/dev/console": "*.err;kern.warning"
   "/var/log/auth.log": "auth.*;authpriv.*"
@@ -181,7 +182,8 @@ base_syslogd_cfg_defaults:
   "/var/log/maillog": "mail.*"
   "/var/log/security": "security.*"
   "/var/log/messages": "*.*;auth.none;authpriv.none;console.none;cron.none;kern.none;mail.none;security.none"
-  "ONLY_DEVD": "!devd" # Using special ONLY_
+  # Using special ONLY_
+  "ONLY_DEVD": "!devd"
   "/var/log/devd.log": "*.>=notice"
 
 base_syslogd_cfg_includes:
@@ -210,14 +212,14 @@ base_zfs_filesystems:
 # mount
 base_mount_fstab: "/etc/fstab"
 base_mount_points: []
-  #- src: /dev/da1
-  #  path: none
-  #  fstype: swap
-  #  opts:
-  #    - sw
-  #  dump: 0
-  #  passno: 0
-  #  state: present
+#  - src: /dev/da1
+#    path: none
+#    fstype: swap
+#    opts:
+#      - sw
+#    dump: 0
+#    passno: 0
+#    state: present
 
 # kld
 base_kld_list: []
