@@ -79,7 +79,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -120,7 +120,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -206,7 +206,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -252,7 +252,7 @@
 # umask
 - name: login umask
   lineinfile:
-    path:  '{{ base_login_cfg_file }}'
+    path: '{{ base_login_cfg_file }}'
     regexp: '^\t:umask=[0-9]+:'
     line: "\t:umask={{ base_login_cfg_umask }}:"
     backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
@@ -284,7 +284,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -352,7 +352,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -409,7 +409,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -444,7 +444,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -476,7 +476,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -535,7 +535,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -565,7 +565,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
@@ -595,7 +595,7 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.j2.in'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
