@@ -1,7 +1,7 @@
 ---
 
 # enabled
-base_freebsd_enabled: yes
+base_freebsd_enabled: no
 
 # mode/owner/group/backup defaults
 base_freebsd_file_mode: "0444"

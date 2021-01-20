@@ -14,7 +14,7 @@ See `defaults/main.yml` for now.
 ```yaml
 - hosts: freebsd
   roles:
-    - { role: sh0shin.base_freebsd }
+    - { role: sh0shin.base_freebsd, base_freebsd_enabled: yes }
 ```
 
 ## License
