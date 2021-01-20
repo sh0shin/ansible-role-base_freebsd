@@ -2,6 +2,3 @@
 # {{ ansible_managed }}
 
 FreeBSD: { url: "pkg+{{ base_pkgng_repos_freebsd_mirror }}/${ABI}/{{ base_pkgng_repos_freebsd_version }}" }
-
-# vim: set sw=2 ts=2 et :
-# eof

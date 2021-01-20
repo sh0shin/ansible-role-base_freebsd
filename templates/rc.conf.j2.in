@@ -148,6 +148,3 @@ kld_list="{{ base_kld_list | join(' ') }}"
 {%    endif                                     %}
 {%  endif                                       %}
 {% endfor                                       %}
-
-# vim: set sw=2 ts=2 et :
-# eof

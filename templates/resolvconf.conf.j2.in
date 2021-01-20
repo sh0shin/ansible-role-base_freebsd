@@ -10,6 +10,3 @@ search_domains='{{ base_dns_search | join(' ') }}'
 {% if base_dns_servers                              %}
 name_servers='{{ base_dns_servers | join(' ') }}'
 {% endif                                            %}
-
-# vim: set sw=4 ts=4 et :
-# eof

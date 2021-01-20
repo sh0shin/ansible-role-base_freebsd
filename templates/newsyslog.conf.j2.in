@@ -20,6 +20,3 @@
 {% for include in base_newsyslog_cfg_includes                                 %}
 <include> {{ include }}
 {% endfor                                                                     %}
-
-# vim: set sw=2 ts=2 et :
-# eof

@@ -32,6 +32,3 @@ exec="echo Loading /boot/loader.conf"
 {%    endif                                         %}
 {%  endif                                           %}
 {% endfor                                           %}
-
-# vim: set sw=2 ts=2 et :
-# eof

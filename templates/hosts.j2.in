@@ -43,6 +43,3 @@ ff02::3 ipv6-allhosts
 # local
 {{ base_hosts_local | join('\n') }}
 {% endif                                              %}
-
-# vim: set sw=2 ts=2 et :
-# eof

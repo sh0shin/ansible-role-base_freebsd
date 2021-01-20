@@ -670,6 +670,3 @@
 #  when: base_freebsd_enabled
 #        and ansible_os_family | string in base_freebsd_os_family_supported
 #  tags: [ base-freebsd ]
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof

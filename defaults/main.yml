@@ -455,6 +455,3 @@ base_freebsd_cleanup_files:
   - "/etc/rc.conf.d/syslogd"
   - "/etc/rc.conf.local"
   - "/etc/sysctl.conf.local"
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof
