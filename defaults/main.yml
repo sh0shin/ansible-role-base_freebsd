@@ -196,17 +196,16 @@ base_syslogd_includes_remove:
   - "/etc/syslog.d/ppp.conf"
 
 # zfs
-base_zfs_enabled: yes
-base_zfs_filesystems:
-  - name: z0
-    properties:
-      aclinherit: passthrough
-      aclmode: passthrough
-      atime: off
-      compression: lz4
-    state: present
-    #origin:
-
+base_zfs_enabled: no
+base_zfs_filesystems: []
+#  - name: z0
+#    properties:
+#      aclinherit: passthrough
+#      aclmode: passthrough
+#      atime: off
+#      compression: lz4
+#    state: present
+#    #origin:
 # see https://docs.ansible.com/ansible/latest/modules/zfs_module.html
 
 # mount
