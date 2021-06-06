@@ -251,11 +251,11 @@ base_rc_cfg_defaults:
   tcp_extensions: yes
   tcp_keepalive: no
   # ntpd
-  ntpd_enable: yes
-  ntpd_flags: "-x"
-  ntpd_sync_on_start: yes
-  ntpdate_enable: yes
-  ntpdate_flags: "-bu"
+  #ntpd_enable: yes
+  #ntpd_flags: "-x"
+  #ntpd_sync_on_start: yes
+  #ntpdate_enable: yes
+  #ntpdate_flags: "-bu"
   # rc
   rc_info: yes
   rc_debug: no
