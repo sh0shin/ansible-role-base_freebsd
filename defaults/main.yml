@@ -97,9 +97,10 @@ base_timezone: 'UTC'
 
 # login/locale
 base_login_cfg_file: "/etc/login.conf"
-base_login_cfg_charset: "UTF-8"
-base_login_cfg_lang: "en_US.UTF-8"
+base_login_cfg_block: absent
 base_login_cfg_umask: "022"
+base_login_cfg_charset: "UTF-8"
+base_login_cfg_lang: "C.UTF-8"
 
 # newsyslog
 base_newsyslog_enabled: yes

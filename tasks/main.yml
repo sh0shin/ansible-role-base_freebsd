@@ -24,7 +24,10 @@
   tags:
     - base
     - base-freebsd
+    - charset
     - cron
+    - lang
+    - locale
     - login
     - pkgng
     - rc
@@ -380,21 +383,29 @@
   tags: [ base-freebsd ]
 
 # locale
-- name: login locale
+- name: login charset & lang (block)
   blockinfile:
     dest: '{{ base_login_cfg_file }}'
     insertafter: "^default:\\\\$"
-    block: "\t:lang={{ base_login_cfg_lang }}:\\\n\t:charset={{ base_login_cfg_charset }}:\\"
+    block: "\t:charset={{ base_login_cfg_charset }}:\\\n\t:lang={{ base_login_cfg_lang }}:\\"
     marker: "\t#: {mark} ANSIBLE MANAGED BLOCK :\\"
     backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
+    state: '{{ base_login_cfg_block }}'
   notify:
     - update_login_database
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+        and ansible_distribution_major_version | int < 13
+  tags:
+    - base
+    - base-freebsd
+    - charset
+    - lang
+    - locale
+    - login
 
 # umask
-- name: login umask
+- name: login umask (line)
   lineinfile:
     path: '{{ base_login_cfg_file }}'
     backrefs: yes
@@ -405,11 +416,53 @@
     - update_login_database
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
+        and ansible_distribution_major_version | int >= 13
   tags:
     - base
     - base-freebsd
     - login
     - umask
+
+- name: login charset (line)
+  lineinfile:
+    path: '{{ base_login_cfg_file }}'
+    backrefs: yes
+    firstmatch: yes
+    regexp: '^(\s*):charset=(.*):(.*)?'
+    insertafter: '^(\s*):umask={{ base_login_cfg_umask }}:'
+    line: '\1:charset={{ base_login_cfg_charset }}:\3'
+    backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
+  notify:
+    - update_login_database
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+        and ansible_distribution_major_version | int >= 13
+  tags:
+    - base
+    - base-freebsd
+    - charset
+    - locale
+    - login
+
+- name: login lang (line)
+  lineinfile:
+    path: '{{ base_login_cfg_file }}'
+    backrefs: yes
+    firstmatch: yes
+    regexp: '^(\s*):lang=([^ru_RU.*].*):(.*)?'
+    insertafter: '^(\s*):charset={{ base_login_cfg_charset }}'
+    line: '\1:lang={{ base_login_cfg_lang }}:\3'
+    backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
+  notify:
+    - update_login_database
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - lang
+    - locale
+    - login
 
 # newsyslog
 - name: newsyslog config (template)
