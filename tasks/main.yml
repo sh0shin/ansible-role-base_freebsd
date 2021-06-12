@@ -321,6 +321,7 @@
 - name: hostname
   hostname:
     name: '{{ base_hostname }}'
+    use: freebsd
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd ]
