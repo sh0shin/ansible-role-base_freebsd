@@ -436,13 +436,3 @@ base_freebsd_update_cron_name: "freebsd-update daily"
 base_freebsd_update_cron_minute: "42"
 base_freebsd_update_cron_hour: "1"
 base_freebsd_update_cron_job: "/usr/sbin/freebsd-update cron"
-
-# cleanup
-base_freebsd_cleanup_enabled: no
-base_freebsd_cleanup_files:
-  - "/boot/loader.conf.local"
-  - "/etc/rc.conf.d/newsyslog"
-  - "/etc/rc.conf.d/sendmail"
-  - "/etc/rc.conf.d/syslogd"
-  - "/etc/rc.conf.local"
-  - "/etc/sysctl.conf.local"

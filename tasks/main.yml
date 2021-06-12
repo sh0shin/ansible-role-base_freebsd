@@ -811,17 +811,6 @@
         and ansible_os_family | string in base_freebsd_os_family_supported
   tags: [ base-freebsd, cron ]
 
-# cleanup
-- name: cleanup (old base freebsd versions)
-  file:
-    path: '{{ item }}'
-    state: absent
-  loop: '{{ base_freebsd_cleanup_files }}'
-  when: base_freebsd_enabled
-        and ansible_os_family | string in base_freebsd_os_family_supported
-        and base_freebsd_cleanup_enabled
-  tags: [ base-freebsd ]
-
 # reboot TODO
 #- name: reboot (if required)
 #  reboot:
