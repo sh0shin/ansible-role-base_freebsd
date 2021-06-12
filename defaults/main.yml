@@ -300,7 +300,6 @@ base_sysctl_cfg_defaults:
   net.inet.ip.process_options: 0
   net.inet.ip.random_id: 1
   net.inet.ip.redirect: 0
-  net.inet.sctp.blackhole: 2
   net.inet.tcp.blackhole: 2
   net.inet.tcp.icmp_may_rst: 0
   net.inet.tcp.nolocaltimewait: 1
@@ -312,7 +311,7 @@ base_sysctl_cfg_defaults:
   net.inet6.ip6.use_deprecated: 0
   # kern
   kern.msgbuf_show_timestamp: 1
-  kern.randompid: '{{ 9999 | random(seed=inventory_hostname) }}'
+  kern.randompid: '{{ 99899 | random(seed=inventory_hostname) }}'
   # security.bsd
   security.bsd.conservative_signals: 1
   security.bsd.hardlink_check_gid: 1
@@ -329,7 +328,6 @@ base_sysctl_cfg_defaults:
   security.bsd.unprivileged_read_msgbuf: 0
   # vfs
   vfs.zfs.min_auto_ashift: 12
-
 base_sysctl_service: "sysctl"
 
 # boot
