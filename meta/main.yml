@@ -19,6 +19,7 @@ galaxy_info:
         #- 11.4
         - 12.1
         #- 12.2
+        #- 13.0
 
   galaxy_tags:
     - base
