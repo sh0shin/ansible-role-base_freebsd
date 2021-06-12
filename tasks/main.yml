@@ -21,7 +21,14 @@
         - 'vars'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd, cron, zfs ]
+  tags:
+    - base
+    - base-freebsd
+    - cron
+    - pkgng
+    - rc
+    - sysctl
+    - zfs
 
 # zfs
 - name: zfs filesystems
@@ -554,7 +561,10 @@
     - stop_syslogd
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - rc
 
 # dns resolvconf
 - name: dns resolvconf (template)
@@ -618,7 +628,10 @@
     - restart_sysctl
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - sysctl
 
 - name: sysctl (freebsd-update.conf IgnorePaths)
   lineinfile:
@@ -629,7 +642,10 @@
     backup: '{{ base_freebsd_update_cfg_file_backup | default(base_freebsd_backup) }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - sysctl
 
 # fstab
 # proc /proc proc defaults,nosuid,nodev,noexec,hidepid=2 0 0

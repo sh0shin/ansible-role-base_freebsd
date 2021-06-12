@@ -21,8 +21,9 @@ galaxy_info:
         #- 12.2
 
   galaxy_tags:
-    - freebsd
     - base
+    - freebsd
+    - pkgng
     - zfs
 
 dependencies: []
