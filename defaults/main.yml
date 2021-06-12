@@ -19,28 +19,13 @@ base_freebsd_umask: "022"
 #base_example_cfg_file_template: "mytemplate"
 
 # packages
-base_freebsd_packages_repo: []
-base_freebsd_packages:
-  - bash
-  - bash-completion
-  - ccze
-  - gnu-watch
-  - gtar
-  - lsof
-  - recode
-  - rsync
-  - screen
-  - tmux
-  - tree
-  - vim-console
-  - zsh
-  - zsh-completions
+base_pkgng_packages_remove: []
 
-base_freebsd_packages_devel:
-  - git
-  - tig
+base_pkgng_custom_packages: []
+base_pkgng_custom_packages_local: []
 
-base_freebsd_packages_local: []
+base_pkgng_freebsd_packages: []
+base_pkgng_freebsd_packages_local: []
 
 # freebsd-update
 base_freebsd_update_cfg_file: "/etc/freebsd-update.conf"
@@ -402,8 +387,9 @@ base_periodic_cfg_defaults:
   security_show_info: no
   security_show_success: no
 
-# pkg(ng)
+# pkgng
 base_pkgng_cfg_file: "/usr/local/etc/pkg.conf"
+base_pkgng_cfg_dir: "/usr/local/etc/pkg/repos"
 base_pkgng_cfg: {}
 base_pkgng_cfg_defaults:
   autoclean: no
@@ -412,10 +398,18 @@ base_pkgng_cfg_defaults:
   repo_autoupdate: no
   syslog: yes
 
-# pkg(ng) repos
-base_pkgng_repos_freebsd_file: "/usr/local/etc/pkg/repos/FreeBSD.conf"
-base_pkgng_repos_freebsd_mirror: "http://pkg.freebsd.org"
-base_pkgng_repos_freebsd_version: "latest"  # quarterly
+# pkgng repos
+base_pkgng_freebsd_enabled: yes
+base_pkgng_freebsd_name: "FreeBSD"
+base_pkgng_freebsd_file: "{{ base_pkgng_cfg_dir }}/{{ base_pkgng_freebsd_name }}.conf"
+base_pkgng_freebsd_url: "pkg+http://pkg.freebsd.org/${ABI}/latest"
+
+base_pkgng_custom_enabled: no
+base_pkgng_custom_name: "MyFreeBSD"
+base_pkgng_custom_file: "{{ base_pkgng_cfg_dir }}/{{ base_pkgng_custom_name }}.conf"
+base_pkgng_custom_url: "http://pkg.myfreebsd.io"
+base_pkgng_custom_pubkey_file: "{{ base_pkgng_cfg_dir }}/{{ base_pkgng_custom_name }}.pub"
+base_pkgng_custom_pubkey: |
 
 # pkg(ng) cron
 base_pkgng_cron_update_state: present

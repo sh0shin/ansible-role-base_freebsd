@@ -85,33 +85,39 @@
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
-# pkgng repos
-- name: pkgng repos (directory)
+# pkgng
+- name: pkgng cfg/repos (directory)
   file:
-    dest: '{{ base_pkgng_repos_freebsd_file | dirname }}'
+    dest: '{{ base_pkgng_cfg_dir }}'
     state: directory
-    mode: '{{ base_pkgng_repos_dir_mode | default(base_freebsd_dir_mode) }}'
-    owner: '{{ base_pkgng_repos_dir_owner | default(base_freebsd_owner) }}'
-    group: '{{ base_pkgng_repos_dir_group | default(base_freebsd_group) }}'
+    mode: '{{ base_pkgng_cfg_dir_mode | default(base_freebsd_dir_mode) }}'
+    owner: '{{ base_pkgng_cfg_dir_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_cfg_dir_group | default(base_freebsd_group) }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
-- name: pkgng repos freebsd (template)
+- name: pkgng freebsd config (template)
   template:
-    dest: '{{ base_pkgng_repos_freebsd_file }}'
+    dest: '{{ base_pkgng_freebsd_file }}'
     src: "{{ lookup('first_found', params) }}"
     #
-    mode: '{{ base_pkgng_repos_freebsd_file_mode | default(base_freebsd_file_mode) }}'
-    owner: '{{ base_pkgng_repos_freebsd_file_owner | default(base_freebsd_owner) }}'
-    group: '{{ base_pkgng_repos_freebsd_file_group | default(base_freebsd_group) }}'
-    backup: '{{ base_pkgng_repos_freebsd_file_backup | default(base_freebsd_backup) }}'
-    validate: '{{ base_pkgng_repos_freebsd_file_validate | default(omit) }}'
+    mode: '{{ base_pkgng_freebsd_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_pkgng_freebsd_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_freebsd_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_pkgng_freebsd_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_pkgng_freebsd_file_validate | default(omit) }}'
   vars:
-    tpl_default: "FreeBSD.conf"
-    tpl_presence: '{{ base_pkgng_repos_freebsd_file_template | default(tpl_default) }}'
+    tpl_default: "pkg.freebsd.conf"
+    tpl_presence: '{{ base_pkgng_freebsd_file_template | default(tpl_default) }}'
     params:
       files:
         - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
@@ -126,44 +132,172 @@
         - 'templates'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
+
+- name: pkgng custom config (template)
+  template:
+    dest: '{{ base_pkgng_custom_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_pkgng_custom_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_pkgng_custom_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_custom_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_pkgng_custom_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_pkgng_custom_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "pkg.custom.conf"
+    tpl_presence: '{{ base_pkgng_custom_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.in.j2'  # role default
+      paths:
+        - '{{ inventory_dir }}/templates'
+        - 'templates'
+  when: base_freebsd_enabled
+        and base_pkgng_custom_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
+
+- name: pkgng custom pubkey (template)
+  template:
+    dest: '{{ base_pkgng_custom_pubkey_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ base_pkgng_custom_pubkey_file_mode | default(base_freebsd_file_mode) }}'
+    owner: '{{ base_pkgng_custom_pubkey_file_owner | default(base_freebsd_owner) }}'
+    group: '{{ base_pkgng_custom_pubkey_file_group | default(base_freebsd_group) }}'
+    backup: '{{ base_pkgng_custom_pubkey_file_backup | default(base_freebsd_backup) }}'
+    validate: '{{ base_pkgng_custom_pubkey_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "pkg.custom.pub"
+    tpl_presence: '{{ base_pkgng_custom_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.in.j2'  # role default
+      paths:
+        - '{{ inventory_dir }}/templates'
+        - 'templates'
+  when: base_freebsd_enabled
+        and base_pkgng_custom_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
 # packages
-- name: packages repo
+- name: packages remove
   pkgng:
-    name: '{{ base_freebsd_packages_repo | default([]) }}'
-    state: '{{ base_freebsd_packages_repo_state | default("latest") }}'
-    cached: false
+    name: '{{ base_pkgng_packages_remove | default([]) }}'
+    autoremove: '{{ base_pkgng_packages_remove_autoremove | default(true) }}'
+    cached: '{{ base_pkgng_packages_remove_cached | default(false) }}'
+    state: '{{ base_pkgng_packages_remove_state | default("absent") }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
-- name: packages
+- name: packages custom
   pkgng:
-    name: '{{ base_freebsd_packages | default([]) }}'
-    state: '{{ base_freebsd_packages_state | default("latest") }}'
-    cached: false
+    name: '{{ base_pkgng_custom_packages | default([]) }}'
+    autoremove: '{{ base_pkgng_custom_packages_autoremove | default(false) }}'
+    cached: '{{ base_pkgng_custom_packages_cached | default(false) }}'
+    pkgsite: '{{ base_pkgng_custom_name }}'  # repo name
+    state: '{{ base_pkgng_custom_packages_state | default("latest") }}'
   when: base_freebsd_enabled
+        and base_pkgng_custom_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
-- name: packages devel
+- name: packages custom local
   pkgng:
-    name: '{{ base_freebsd_packages_devel | default([]) }}'
-    state: '{{ base_freebsd_packages_devel_state | default("latest") }}'
-    cached: false
+    name: '{{ base_pkgng_custom_packages_local | default([]) }}'
+    autoremove: '{{ base_pkgng_custom_packages_local_autoremove | default(false) }}'
+    cached: '{{ base_pkgng_custom_packages_local_cached | default(false) }}'
+    pkgsite: '{{ base_pkgng_custom_name }}'  # repo name
+    state: '{{ base_pkgng_custom_packages_local_state | default("latest") }}'
   when: base_freebsd_enabled
+        and base_pkgng_custom_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
-- name: packages local
+- name: packages freebsd
   pkgng:
-    name: '{{ base_freebsd_packages_local | default([]) }}'
-    state: '{{ base_freebsd_packages_local_state | default("latest") }}'
-    cached: false
+    name: '{{ base_pkgng_freebsd_packages | default([]) }}'
+    autoremove: '{{ base_pkgng_freebsd_packages_autoremove | default(false) }}'
+    cached: '{{ base_pkgng_freebsd_packages_cached | default(false) }}'
+    pkgsite: '{{ base_pkgng_freebsd_name }}'  # repo name
+    state: '{{ base_pkgng_freebsd_packages_state | default("latest") }}'
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
+
+- name: packages freebsd local
+  pkgng:
+    name: '{{ base_pkgng_freebsd_packages_local | default([]) }}'
+    autoremove: '{{ base_pkgng_freebsd_packages_local_autoremove | default(false) }}'
+    cached: '{{ base_pkgng_freebsd_packages_local_cached | default(false) }}'
+    pkgsite: '{{ base_pkgng_freebsd_name }}'  # repo name
+    state: '{{ base_pkgng_freebsd_packages_local_state | default("latest") }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
+
+- name: packages (fact)
+  set_fact:
+    base_pkgng_packages: '{{ base_pkgng_freebsd_packages + base_pkgng_freebsd_packages_local + base_pkgng_custom_packages + base_pkgng_custom_packages_local }}'
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
+
+- name: packages (dependecies)
+  command: "pkg check -y -d {{ base_pkgng_packages | join(' ') }}"
+  args:
+    chdir: "/"
+  register: pkg_check
+  changed_when: "pkg_check.rc >= 1"
+  failed_when: "'FAILED' in pkg_check.stderr"
+  when: base_freebsd_enabled
+        and ansible_os_family | string in base_freebsd_os_family_supported
+  tags:
+    - base
+    - base-freebsd
+    - pkgng
 
 # freebsd-update
 - name: freebsd-update Components
