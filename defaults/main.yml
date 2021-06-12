@@ -182,7 +182,7 @@ base_syslogd_includes_remove:
   - "/etc/syslog.d/ppp.conf"
 
 # zfs
-base_zfs_enabled: no
+base_zfs_enabled: yes
 base_zfs_filesystems: []
 #  - name: z0
 #    properties:
