@@ -25,9 +25,11 @@
     - base
     - base-freebsd
     - cron
+    - login
     - pkgng
     - rc
     - sysctl
+    - umask
     - zfs
 
 # zfs
@@ -395,14 +397,19 @@
 - name: login umask
   lineinfile:
     path: '{{ base_login_cfg_file }}'
-    regexp: '^\t:umask=[0-9]+:'
-    line: "\t:umask={{ base_login_cfg_umask }}:"
+    backrefs: yes
+    regexp: '^(\s*):umask=[0-9]+:(.*)?$'
+    line: '\1:umask={{ base_login_cfg_umask | default(base_freebsd_umask) }}:\2'
     backup: '{{ base_login_cfg_file_backup | default(base_freebsd_backup) }}'
   notify:
     - update_login_database
   when: base_freebsd_enabled
         and ansible_os_family | string in base_freebsd_os_family_supported
-  tags: [ base-freebsd ]
+  tags:
+    - base
+    - base-freebsd
+    - login
+    - umask
 
 # newsyslog
 - name: newsyslog config (template)
