@@ -1,0 +1,10 @@
+# {{ base_pkgng_custom_file }}
+# {{ ansible_managed }}
+
+{{ base_pkgng_custom_name }}: {
+  url: "{{ base_pkgng_custom_url }}",
+  signature_type: "pubkey",
+  pubkey: "{{ base_pkgng_custom_pubkey_file }}",
+  enabled: {% if base_pkgng_custom_enabled is sameas true %}yes{% else %}no{% endif %}
+
+}

@@ -1,0 +1,8 @@
+# {{ base_pkgng_freebsd_file }}
+# {{ ansible_managed }}
+
+{{ base_pkgng_freebsd_name }}: {
+  url: "{{ base_pkgng_freebsd_url }}",
+  enabled: {% if base_pkgng_freebsd_enabled is sameas true %}yes{% else %}no{% endif %}
+
+}
