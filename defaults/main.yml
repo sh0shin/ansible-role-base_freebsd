@@ -378,6 +378,8 @@ base_periodic_cfg_defaults:
   daily_status_zfs_enable: '{{ base_zfs_enabled }}'
   ## 480.leapfile-ntpd
   daily_ntpd_leapfile_enable: yes
+  ## 480.status-ntpd
+  daily_status_ntpd_enable: yes
   # weekly
   weekly_show_info: no
   weekly_show_success: no
